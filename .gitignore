@@ -1,0 +1,4 @@
+node_modules/
+public/bundle.js
+config/development.env
+config/test.env
