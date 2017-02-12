@@ -4,11 +4,11 @@ var TestUtils = require('react-addons-test-utils');
 var expect = require('expect');
 var $ = require('jquery');
 
-import {TodoSearch} from 'TodoSearch';
+import {PropertySearch} from 'PropertySearch';
 
-describe('TodoSearch', () => {
+describe('PropertySearch', () => {
   it('should exist', () => {
-    expect(TodoSearch).toExist();
+    expect(PropertySearch).toExist();
   });
 
   it('should dispatch SET_SEARCH_TEXT on input change', () => {
@@ -18,10 +18,10 @@ describe('TodoSearch', () => {
       searchText
     };
     var spy = expect.createSpy();
-    var todoSearch = TestUtils.renderIntoDocument(<TodoSearch dispatch={spy}/>);
+    var propertySearch = TestUtils.renderIntoDocument(<PropertySearch dispatch={spy}/>);
 
-    todoSearch.refs.searchText.value = searchText;
-    TestUtils.Simulate.change(todoSearch.refs.searchText);
+    propertySearch.refs.searchText.value = searchText;
+    TestUtils.Simulate.change(propertySearch.refs.searchText);
 
     expect(spy).toHaveBeenCalledWith(action);
   });
@@ -31,10 +31,10 @@ describe('TodoSearch', () => {
       type: 'TOGGLE_SHOW_COMPLETED'
     };
     var spy = expect.createSpy();
-    var todoSearch = TestUtils.renderIntoDocument(<TodoSearch dispatch={spy}/>);
+    var propertySearch = TestUtils.renderIntoDocument(<PropertySearch dispatch={spy}/>);
 
-    todoSearch.refs.showCompleted.checked = true;
-    TestUtils.Simulate.change(todoSearch.refs.showCompleted);
+    propertySearch.refs.showCompleted.checked = true;
+    TestUtils.Simulate.change(propertySearch.refs.showCompleted);
 
     expect(spy).toHaveBeenCalledWith(action);
   });

@@ -12,7 +12,7 @@ export class Login extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="page-title">Todo App</h1>
+        <h1 className="page-title">Property App</h1>
 
         <div className="row">
           <div className="columns small-centered small-10 medium-6 large-4">

@@ -1,11 +1,11 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import TodoList from 'TodoList';
-import AddTodo from 'AddTodo';
-import TodoSearch from 'TodoSearch';
+import PropertyList from 'PropertyList';
+import AddProperty from 'AddProperty';
+import PropertySearch from 'PropertySearch';
 import * as actions from 'actions';
 
-export class TodoApp extends React.Component {
+export class BilierApp extends React.Component {
   onLogout(e) {
     var {dispatch} = this.props;
     e.preventDefault();
@@ -19,13 +19,13 @@ export class TodoApp extends React.Component {
           <a href="#" onClick={this.onLogout.bind(this)}>LogOut</a>
         </div>
 
-        <h1 className="page-title">Todo App</h1>
+        <h1 className="page-title">Property App</h1>
         <div className="row">
           <div className="column small-centered small-11 medium-6 large-5">
             <div className="container">
-              <TodoSearch />
-              <TodoList />
-              <AddTodo />
+              <PropertySearch />
+              <PropertyList />
+              <AddProperty />
             </div>
           </div>
         </div>
@@ -34,4 +34,4 @@ export class TodoApp extends React.Component {
   }
 };
 
-export default Redux.connect()(TodoApp);
+export default Redux.connect()(BilierApp);

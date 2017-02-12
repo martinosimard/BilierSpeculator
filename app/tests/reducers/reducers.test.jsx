@@ -28,26 +28,26 @@ describe('Reducers', () => {
     });
   });
 
-  describe('addTodoReducer', () => {
-    it('should add new todo', () => {
+  describe('addPropertyReducer', () => {
+    it('should add new property', () => {
       var action = {
-        type: 'ADD_TODO',
-        todo: {
+        type: 'ADD_PROPERTY',
+        property: {
           id: 'abc123',
           text: 'Something to do',
           completed: false,
           createdAt: 213654
         }
       };
-      var res = reducers.todosReducer(df([]), df(action));
+      var res = reducers.propertiesReducer(df([]), df(action));
 
       expect(res.length).toEqual(1);
-      expect(res[0]).toEqual(action.todo);
+      expect(res[0]).toEqual(action.property);
     });
   });
 
-  it('should add existing Todos', () => {
-    var todos = [{
+  it('should add existing Properties', () => {
+    var properties = [{
       id: 1,
       text: 'text 1',
       completed: false,
@@ -56,17 +56,17 @@ describe('Reducers', () => {
     }];
 
     var action = {
-      type: 'ADD_TODOS',
-      todos
+      type: 'ADD_PROPERTIES',
+      properties
     };
-    var res = reducers.todosReducer(df([]), df(action));
+    var res = reducers.propertiesReducer(df([]), df(action));
 
     expect(res.length).toEqual(1);
-    expect(res[0]).toEqual(todos[0]);
+    expect(res[0]).toEqual(properties[0]);
   });
 
-  it('should wipe todos on logout', () => {
-    var todos = [{
+  it('should wipe properties on logout', () => {
+    var properties = [{
       id: 1,
       text: 'text 1',
       completed: false,
@@ -77,36 +77,36 @@ describe('Reducers', () => {
     var action = {
       type: 'LOGOUT'
     };
-    var res = reducers.todosReducer(df(todos), df(action));
+    var res = reducers.propertiesReducer(df(properties), df(action));
 
     expect(res.length).toEqual(0);
   });
 
-  describe('toggleTodoReducer', () => {
-    it('should update Todo', () => {
+  describe('togglePropertyReducer', () => {
+    it('should update Property', () => {
       var updates = {
         completed: false,
         completedAt: null
       };
 
-      var todos = [{
+      var properties = [{
           id: 11,
-          text: "Test todo",
+          text: "Test property",
           completed: true,
           completedAt: 123
         }];
 
       var action = {
-        type: 'UPDATE_TODO',
-        id: todos[0].id,
+        type: 'UPDATE_PROPERTY',
+        id: properties[0].id,
         updates
       };
 
-      var res = reducers.todosReducer(df(todos), df(action));
+      var res = reducers.propertiesReducer(df(properties), df(action));
 
       expect(res[0].completed).toEqual(updates.completed);
       expect(res[0].completedAt).toEqual(updates.completedAt);
-      expect(res[0].text).toEqual(todos[0].text);
+      expect(res[0].text).toEqual(properties[0].text);
     });
   });
 

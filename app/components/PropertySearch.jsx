@@ -2,13 +2,13 @@ import React from 'react';
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
-export class TodoSearch extends React.Component {
+export class PropertySearch extends React.Component {
   render () {
     var {dispatch, showCompleted, searchText} = this.props;
     return (
       <div className="container__header">
         <div>
-          <input type="search" ref="searchText" placeholder="Search todos" value={searchText} onChange={() => {
+          <input type="search" ref="searchText" placeholder="Rechercher une propriété" value={searchText} onChange={() => {
               var searchText = this.refs.searchText.value;
               dispatch(actions.setSearchText(searchText));
             }} />
@@ -18,7 +18,7 @@ export class TodoSearch extends React.Component {
             <input type="checkbox" ref="showCompleted" checked={showCompleted} onChange={() => {
                 dispatch(actions.toggleShowCompleted());
               }} />
-            Show completed todos
+            Afficher les propriétés discartés
           </label>
         </div>
       </div>
@@ -33,4 +33,4 @@ export default Redux.connect(
       searchText: state.searchText
     }
   }
-)(TodoSearch);
+)(PropertySearch);

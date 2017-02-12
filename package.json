@@ -1,7 +1,7 @@
 {
-  "name": "TodoApp",
+  "name": "BilierApp",
   "version": "1.0.0",
-  "description": "Todo App using React and Redux",
+  "description": "Bilier App using React and Redux",
   "main": "index.js",
   "scripts": {
     "test": "SET NODE_ENV=test&& karma start",

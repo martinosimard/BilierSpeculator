@@ -11,8 +11,8 @@ import router from 'app/router/';
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     store.dispatch(actions.login(user.uid));
-    store.dispatch(actions.startAddTodos());
-    hashHistory.push('/todos');
+    store.dispatch(actions.startAddProperties());
+    hashHistory.push('/properties');
   } else {
     store.dispatch(actions.logout());
     hashHistory.push('/');
@@ -23,7 +23,7 @@ firebase.auth().onAuthStateChanged((user) => {
 //   var state = store.getState();
 //   console.log('New state', state);
 //
-//   TodoAPI.setTodos(state.todos);
+//   BilierAPI.setTodos(state.todos);
 // });
 
 // Examples of setting defaults values on startup for testing purposes
@@ -31,7 +31,7 @@ firebase.auth().onAuthStateChanged((user) => {
 // store.dispatch(actions.setSearchText('yard'));
 // store.dispatch(actions.toggleShowCompleted());
 
-// var initialTodos = TodoAPI.getTodos();
+// var initialTodos = BilierAPI.getTodos();
 // store.dispatch(actions.addTodo(initialTodos));
 
 // Acync to Firebase

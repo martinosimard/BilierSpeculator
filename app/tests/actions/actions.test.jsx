@@ -27,23 +27,23 @@ describe('Actions', () => {
     expect(res).toEqual(action);
   });
 
-  it('should generate add todo action', () => {
+  it('should generate add Property action', () => {
     var action = {
-      type: 'ADD_TODO',
-      todo: {
+      type: 'ADD_PROPERTY',
+      property: {
         id: '123abc',
         text: 'Anything we like',
         completed: false,
         createdAt: 0
       }
     };
-    var res = actions.addTodo(action.todo);
+    var res = actions.addProperty(action.property);
 
     expect(res).toEqual(action);
   });
 
-  it('should generate add todos action object', () => {
-    var todos = [{
+  it('should generate add properties action object', () => {
+    var properties = [{
       id: '111',
       text: 'anything',
       completed: false,
@@ -51,21 +51,21 @@ describe('Actions', () => {
       createdAt: 33000
     }];
     var action = {
-      type: 'ADD_TODOS',
-      todos
+      type: 'ADD_PROPERTIES',
+      properties
     };
-    var res = actions.addTodos(todos);
+    var res = actions.addProperties(properties);
 
     expect(res).toEqual(action);
   });
 
-  it('should generate update todo action', () => {
+  it('should generate update property action', () => {
     var action = {
-      type: 'UPDATE_TODO',
+      type: 'UPDATE_PROPERTY',
       id: '123',
       updates: {completed: false}
     };
-    var res = actions.updateTodo(action.id, action.updates);
+    var res = actions.updateProperty(action.id, action.updates);
 
     expect(res).toEqual(action);
   });
@@ -89,21 +89,21 @@ describe('Actions', () => {
     expect(res).toEqual(action);
   });
 
-  describe('Tests with firebase todos', () => {
-    var testTodoRef;
+  describe('Tests with firebase properties', () => {
+    var testPropertyRef;
     var uid;
-    var todosRef;
+    var propertiesRef;
 
     beforeEach((done) => {
       firebase.auth().signInAnonymously().then((user) => {
         uid = user.uid;
-        todosRef = firebaseRef.child(`users/${uid}/todos`);
+        propertiesRef = firebaseRef.child(`users/${uid}/properties`);
 
-        return todosRef.remove();
+        return propertiesRef.remove();
       }).then(() => {
-        testTodoRef = todosRef.push();
+        testPropertyRef = propertiesRef.push();
 
-        return testTodoRef.set({
+        return testPropertyRef.set({
           text: 'Something to do',
           completed: false,
           createdAt: 23453453
@@ -114,19 +114,19 @@ describe('Actions', () => {
     });
 
     afterEach((done) => {
-      todosRef.remove().then(() => done());
+      propertiesRef.remove().then(() => done());
     });
 
-    it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
+    it('should toggle property and dispatch UPDATE_PROPERTY action', (done) => {
       const store = createMockStore({auth: {uid}});
-      const action = actions.startToggleTodo(testTodoRef.key, true);
+      const action = actions.startToggleProperty(testPropertyRef.key, true);
 
       store.dispatch(action).then(() => {
         const mockActions = store.getActions();
 
         expect(mockActions[0]).toInclude({
-          type: 'UPDATE_TODO',
-          id: testTodoRef.key
+          type: 'UPDATE_PROPERTY',
+          id: testPropertyRef.key
         });
         expect(mockActions[0].updates).toInclude({
           completed: true
@@ -137,32 +137,32 @@ describe('Actions', () => {
       }, done);
     });
 
-    it('should populate todos and dispatch ADD_TODOS', (done) => {
+    it('should populate properties and dispatch ADD_PROPERTIES', (done) => {
       const store = createMockStore({auth: {uid}});
-      const action = actions.startAddTodos();
+      const action = actions.startAddProperties();
 
       store.dispatch(action).then(() => {
         const mockActions = store.getActions();
 
-        expect(mockActions[0].type).toEqual('ADD_TODOS');
-        expect(mockActions[0].todos.length).toEqual(1);
-        expect(mockActions[0].todos[0].text).toEqual('Something to do');
+        expect(mockActions[0].type).toEqual('ADD_PROPERTIES');
+        expect(mockActions[0].properties.length).toEqual(1);
+        expect(mockActions[0].properties[0].text).toEqual('Something to do');
 
         done();
       }, done)
     });
 
-    it('should create todo and dispatch ADD_TODO', (done) => {
+    it('should create property and dispatch ADD_PROPERTY', (done) => {
       const store = createMockStore({auth: {uid}});
-      const todoText = 'My todo item';
+      const propertyText = 'My property item';
 
-      store.dispatch(actions.startAddTodo(todoText)).then(() => {
+      store.dispatch(actions.startAddProperty(propertyText)).then(() => {
         const actions = store.getActions();
         expect(actions[0]).toInclude({
-          type: 'ADD_TODO'
+          type: 'ADD_PROPERTY'
         });
-        expect(actions[0].todo).toInclude({
-          text: todoText
+        expect(actions[0].property).toInclude({
+          text: propertyText
         });
         done();
       }).catch(done);

@@ -6,25 +6,25 @@ var expect = require('expect');
 var $ = require('jquery');
 
 var configureStore = require('configureStore');
-import {TodoApp} from 'TodoApp';
-import TodoList from 'TodoList';
+import {BilierApp} from 'BilierApp';
+import PropertyList from 'PropertyList';
 
-describe('TodoApp', () => {
+describe('BilierApp', () => {
   it('should exist', () => {
-    expect(TodoApp).toExist();
+    expect(BilierApp).toExist();
   });
 
-  it('should render TodoList', () => {
+  it('should render PropertyList', () => {
     var store = configureStore.configure();
     var provider = TestUtils.renderIntoDocument(
       <Provider store={store}>
-        <TodoApp/>
+        <BilierApp/>
       </Provider>
     );
 
-    var todoApp = TestUtils.scryRenderedComponentsWithType(provider, TodoApp)[0]
-    var todoList = TestUtils.scryRenderedComponentsWithType(todoApp, TodoList);
+    var BilierApp = TestUtils.scryRenderedComponentsWithType(provider, BilierApp)[0]
+    var propertyList = TestUtils.scryRenderedComponentsWithType(BilierApp, PropertyList);
 
-    expect(todoList.length).toEqual(1);
+    expect(propertyList.length).toEqual(1);
   });
 });

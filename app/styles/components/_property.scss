@@ -1,4 +1,4 @@
-.todo {
+.property {
   align-items: center;
   cursor: pointer;
   display: flex;
@@ -18,12 +18,12 @@
   }
 }
 
-.todo__subtext {
+.property__subtext {
   color: #999;
 }
 
-.todo-completed {
-  p, .todo-subtext {
+.property-completed {
+  p, .property-subtext {
     color: $light-color;
     text-decoration: line-through;
   }

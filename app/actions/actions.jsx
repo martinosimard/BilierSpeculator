@@ -15,80 +15,80 @@ export var toggleShowCompleted = () => {
   };
 };
 
-export var addTodo = (todo) => {
+export var addProperty = (property) => {
   return {
-    type: 'ADD_TODO',
-    todo
+    type: 'ADD_PROPERTY',
+    property
   };
 };
 
-export var startAddTodo = (text) => {
+export var startAddProperty = (newProperty) => {
   return (dispatch, getState) => {
-    var todo = {
-      text,
+    var property = {
+      ...newProperty,
       completed: false,
       createdAt: moment().unix(),
       completedAt: null
     };
     var uid = getState().auth.uid;
-    var todoRef = firebaseRef.child(`users/${uid}/todos`).push(todo);
+    var propertyRef = firebaseRef.child(`users/${uid}/properties`).push(property);
 
-    return todoRef.then(() => {
-      dispatch(addTodo({
-        ...todo,
-        id: todoRef.key
+    return propertyRef.then(() => {
+      dispatch(addProperty({
+        ...property,
+        id: propertyRef.key
       }));
     });
   };
 };
 
-export var addTodos = (todos) => {
+export var addProperties = (properties) => {
   return {
-    type: 'ADD_TODOS',
-    todos
+    type: 'ADD_PROPERTIES',
+    properties
   };
 };
 
-export var startAddTodos = () => {
+export var startAddProperties = () => {
   return (dispatch, getState) => {
     var uid = getState().auth.uid;
-    var todosRef = firebaseRef.child(`users/${uid}/todos`);
+    var propertiesRef = firebaseRef.child(`users/${uid}/properties`);
 
-    return todosRef.once('value').then((snapshot) => {
-      var todos = snapshot.val() || {};
-      var parsedTodos = [];
+    return propertiesRef.once('value').then((snapshot) => {
+      var properties = snapshot.val() || {};
+      var parsedProperties = [];
 
-      Object.keys(todos).forEach((todoId) => {
-        parsedTodos.push({
-          id: todoId,
-          ...todos[todoId]
+      Object.keys(properties).forEach((propertyId) => {
+        parsedProperties.push({
+          id: propertyId,
+          ...properties[propertyId]
         });
       });
 
-      dispatch(addTodos(parsedTodos));
+      dispatch(addProperties(parsedProperties));
     });
   };
 };
 
-export var updateTodo = (id, updates) => {
+export var updateProperty = (id, updates) => {
   return {
-    type: 'UPDATE_TODO',
+    type: 'UPDATE_PROPERTY',
     id,
     updates
   };
 };
 
-export var startToggleTodo = (id, completed) => {
+export var startToggleProperty = (id, completed) => {
   return (dispatch, getState) => {
     var uid = getState().auth.uid;
-    var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+    var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
     var updates = {
       completed,
       completedAt: completed ? moment().unix() : null
     };
 
-    return todoRef.update(updates).then(() => {
-      dispatch(updateTodo(id, updates));
+    return propertyRef.update(updates).then(() => {
+      dispatch(updateProperty(id, updates));
     });
   };
 };

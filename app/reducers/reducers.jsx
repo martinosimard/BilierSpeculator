@@ -19,27 +19,27 @@ export var showCompletedReducer = (state = false, action) => {
   };
 };
 
-export var todosReducer = (state = [], action) => {
+export var propertiesReducer = (state = [], action) => {
   switch(action.type) {
-    case 'ADD_TODO' :
+    case 'ADD_PROPERTY' :
       return [
         ...state,
-        action.todo
+        action.property
       ]
-      case 'ADD_TODOS' :
+      case 'ADD_PROPERTIES' :
         return [
           ...state,
-          ...action.todos
+          ...action.properties
         ]
-    case 'UPDATE_TODO' :
-      return state.map((todo) => {
-        if (todo.id === action.id) {
+    case 'UPDATE_PROPERTY' :
+      return state.map((property) => {
+        if (property.id === action.id) {
           return {
-            ...todo,
+            ...property,
             ...action.updates
           };
         } else {
-          return todo;
+          return property;
         };
       });
     case 'LOGOUT' :
