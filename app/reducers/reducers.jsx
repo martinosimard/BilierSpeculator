@@ -31,6 +31,29 @@ export var propertiesReducer = (state = [], action) => {
           ...state,
           ...action.properties
         ]
+      case 'EDIT_PROPERTY' :
+      return state.map((property) => {
+      				if (property.id === action.id) {
+                debugger
+                action.property.rue = "sorbierz";
+      					if (action.property.rue != '') {
+      						return {
+      							...property,
+      							edit: !property.edit,
+      							edited: true,
+      							editedAt: moment().unix(),
+      							rue: action.property.rue,
+      						}
+      					} else {
+      						return {
+      							...property,
+      							edit: !property.edit
+      						}
+      					}
+      				} else {
+      					return property;
+      				}
+      			});
     case 'UPDATE_PROPERTY' :
       return state.map((property) => {
         if (property.id === action.id) {

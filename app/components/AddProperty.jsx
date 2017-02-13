@@ -2,7 +2,7 @@ import React from 'react';
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
-class Property {
+class PropertyInfo {
   constructor (numeroCivique = '',  rue = '',  quartier = '',  deuxDemi = 0,troisDemi = 0, quatreDemi = 0,
                 cinqDemi = 0,sixDemi = 0,septDemi = 0, postalCode = '', price = '', year = '',
                 grossRevenue = '', taxesSchool = '', taxesCity = '',  assurances = '', typeProp = '',
@@ -36,7 +36,7 @@ export class AddProperty extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
     var {dispatch} = this.props;
-    var newProperty = new Property(
+    var newProperty = new PropertyInfo(
             this.refs.numeroCiviqueText.value,
             this.refs.rueText.value,
             this.refs.quartier.value,

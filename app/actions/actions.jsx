@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
+import firebase, {firebaseRef, githubProvider, googleProvider} from 'app/firebase/';
 
 export var setSearchText = (searchText) => {
   return {
@@ -78,6 +78,40 @@ export var updateProperty = (id, updates) => {
   };
 };
 
+export var editProperty = (id, property) => {
+  return {
+    type: 'EDIT_PROPERTY',
+    id,
+    property
+  };
+};
+
+export var startEditProperty = (id, property) => {
+  return (dispatch, getState) => {
+    var uid = getState().auth.uid;
+    var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
+debugger
+    return propertyRef.update(property).then(() => {
+      dispatch(editProperty(id, property));
+    });
+  };
+};
+
+export var startUpdateProperty = (id, property) => {
+  return (dispatch, getState) => {
+    var uid = getState().auth.uid;
+    var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
+    debugger
+    var updates = {
+      ...property
+    };
+
+    return propertyRef.update(updates).then(() => {
+      dispatch(updateProperty(id, updates));
+    });
+  };
+};
+
 export var startToggleProperty = (id, completed) => {
   return (dispatch, getState) => {
     var uid = getState().auth.uid;
@@ -102,7 +136,7 @@ export var login = (uid) => {
 
 export var startLogin = () => {
   return (dispatch, getState) => {
-    return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+    return firebase.auth().signInWithPopup(googleProvider).then((result) => {
       console.log('Auth worked!', result);
     }, (error) => {
       console.log('Unable to auth', error);
