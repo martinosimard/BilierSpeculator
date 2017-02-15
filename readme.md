@@ -1,1 +1,1 @@
-React Bilier App using React and Redux
+Bilier App using React and Redux
