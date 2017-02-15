@@ -21,12 +21,10 @@ export class BilierApp extends React.Component {
 
         <h1 className="page-title">Property App</h1>
         <div className="row">
-          <div className="column small-centered small-11 medium-6 large-5">
             <div className="container">
               <PropertySearch />
               <PropertyList />
               <AddProperty />
-            </div>
           </div>
         </div>
       </div>

@@ -27,6 +27,19 @@ export class PropertyList extends React.Component {
 
     return (
       <div>
+        <div className="row">
+          <div className="medium-2 columns">Description</div>
+          <div className="medium-1 columns">Dépenses d'opération</div>
+          <div className="medium-1 columns">Revenu Brut Effectif</div>
+          <div className="medium-1 columns">Revenu Net Operation</div>
+          <div className="medium-1 columns">Valeur Immeuble</div>
+          <div className="medium-1 columns">Multiplicateur Revenu Brut</div>
+          <div className="medium-1 columns">Multiplicateur Revenu Net</div>
+          <div className="medium-1 columns">Ratio Depenses</div>
+          <div className="medium-1 columns">Ratio Taux Capitalisation</div>
+          <div className="medium-1 columns">Masquer</div>
+          <div className="medium-1 columns">Modifier la propriétée</div>
+        </div>
         {renderProperties()}
       </div>
     )

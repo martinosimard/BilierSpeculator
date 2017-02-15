@@ -4,9 +4,9 @@ import * as actions from 'actions';
 
 class PropertyInfo {
   constructor (numeroCivique = '',  rue = '',  quartier = '',  deuxDemi = 0,troisDemi = 0, quatreDemi = 0,
-                cinqDemi = 0,sixDemi = 0,septDemi = 0, postalCode = '', price = '', year = '',
-                grossRevenue = '', taxesSchool = '', taxesCity = '',  assurances = '', typeProp = '',
-              evaluationTerrainText = 0, evaluationBatimentText = 0, entretien = 0, autres = 0)
+                cinqDemi = 0,sixDemiPlus = 0, postalCode = '', price = '', year = '',
+                revenuBrut = '', taxesSchool = '', taxesCity = '',  assurances = '', typeProp = '',
+              evaluationTerrain = 0, evaluationBatiment = 0, entretien = 0, autres = 0, vacance = 0)
   {
     this.numeroCivique = numeroCivique;
     this.rue = rue;
@@ -14,7 +14,7 @@ class PropertyInfo {
     this.quartier = quartier;
     this.price = price;
     this.year = year;
-    this.grossRevenue = grossRevenue;
+    this.revenuBrut = revenuBrut;
     this.taxesSchool = taxesSchool;
     this.taxesCity = taxesCity;
     this.assurances = assurances;
@@ -22,13 +22,13 @@ class PropertyInfo {
     this.troisDemi = troisDemi;
     this.quatreDemi = quatreDemi;
     this.cinqDemi = cinqDemi;
-    this.sixDemi = sixDemi;
-    this.septDemi = septDemi;
+    this.sixDemiPlus = sixDemiPlus;
     this.type = typeProp;
-    this.evaluationTerrainText = evaluationTerrainText;
-    this.evaluationBatimentText = evaluationBatimentText;
+    this.evaluationTerrain = evaluationTerrain;
+    this.evaluationBatiment = evaluationBatiment;
     this.entretien = entretien;
     this.autres = autres;
+    this.vacance = vacance;
   }
 };
 
@@ -36,6 +36,7 @@ export class AddProperty extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
     var {dispatch} = this.props;
+    debugger
     var newProperty = new PropertyInfo(
             this.refs.numeroCiviqueText.value,
             this.refs.rueText.value,
@@ -44,20 +45,20 @@ export class AddProperty extends React.Component {
             this.refs.troisDemi.value,
             this.refs.quatreDemi.value,
             this.refs.cinqDemi.value,
-            this.refs.sixDemi.value,
-            this.refs.septDemi.value,
+            this.refs.sixDemiPlus.value,
             this.refs.postalCodeText.value,
             this.refs.priceText.value,
             this.refs.yearText.value,
-            this.refs.grossRevenueText.value,
+            this.refs.revenuBrutText.value,
             this.refs.taxesSchoolText.value,
             this.refs.taxesCityText.value,
             this.refs.assurancesText.value,
             this.refs.typeProp.value,
-            this.refs.evaluationTerrainText.value,
-            this.refs.evaluationBatimentText.value,
+            this.refs.evaluationTerrain.value,
+            this.refs.evaluationBatiment.value,
             this.refs.entretien.value,
-            this.refs.autres.value
+            this.refs.autres.value,
+            this.refs.vacance.value
    );
 
     if (this.refs.rueText.value.length > 0) {
@@ -68,20 +69,20 @@ export class AddProperty extends React.Component {
       this.refs.troisDemi.value = "";
       this.refs.quatreDemi.value = "";
       this.refs.cinqDemi.value = "";
-      this.refs.sixDemi.value = "";
-      this.refs.septDemi.value = "";
+      this.refs.sixDemiPlus.value = "";
       this.refs.postalCodeText.value = "";
       this.refs.priceText.value = "";
       this.refs.yearText.value = "";
-      this.refs.grossRevenueText.value = "";
+      this.refs.revenuBrutText.value = "";
       this.refs.taxesSchoolText.value = "";
       this.refs.taxesCityText.value = "";
       this.refs.assurancesText.value = "";
       this.refs.typeProp.selectedIndex = 0;
-      this.refs.evaluationTerrainText.value = "";
-      this.refs.evaluationBatimentText.value = "";
+      this.refs.evaluationTerrain.value = "";
+      this.refs.evaluationBatiment.value = "";
       this.refs.entretien.value = "";
       this.refs.autres.value = "";
+      this.refs.vacance.value = "";
       dispatch(actions.startAddProperty(newProperty));
     } else {
       this.refs.rueText.focus();
@@ -90,12 +91,12 @@ export class AddProperty extends React.Component {
   render () {
     return (
       <div className="container__footer">
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <input type="text" ref="numeroCiviqueText" placeholder="Numéro civique"/>
-          <input type="text" ref="rueText" placeholder="Nom de la rue"/>
-          <input type="text" ref="postalCodeText" placeholder="Code postal"/>
-          <input type="text" ref="priceText" placeholder="Prix de vente"/>
-          <input type="text" ref="yearText" placeholder="Année de construction"/>
+        <form onSubmit={this.handleSubmit.bind(this)} data-abide>
+          <input type="text" ref="numeroCiviqueText" placeholder="Numéro civique" required pattern="[a-zA-Z0-9]+"/>
+          <input type="text" ref="rueText" placeholder="Nom de la rue" required pattern="[a-zA-Z]+"/>
+          <input type="text" ref="postalCodeText" placeholder="Code postal" required pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"/>
+          <input type="text" ref="priceText" placeholder="Prix de vente" required pattern="[0-9]+"/>
+          <input type="text" ref="yearText" placeholder="Année de construction" required pattern="^\d{4}$"/>
           <div>
             <label>Quartier:</label>
             <select ref="quartier">
@@ -112,20 +113,20 @@ export class AddProperty extends React.Component {
               <option value="Maizerets (quartier)">Maizerets (quartier)</option>
             </select>
           </div>
-          <input type="text" ref="grossRevenueText" placeholder="Revenus brut"/>
-          <input type="text" ref="taxesSchoolText" placeholder="Taxes scolaires"/>
-          <input type="text" ref="taxesCityText" placeholder="Taxes municipales"/>
-          <input type="text" ref="entretien" placeholder="Dépenses d'entretien"/>
-          <input type="text" ref="autres" placeholder="Autres dépenses"/>
-          <input type="text" ref="assurancesText" placeholder="Assurances"/>
-          <input type="text" ref="evaluationTerrainText" placeholder="Evaluation municipale du terrain"/>
-          <input type="text" ref="evaluationBatimentText" placeholder="Evaluation municipale du batiment"/>
-          <input type="text" ref="deuxDemi" placeholder="Nombre de 2 pieces"/>
-          <input type="text" ref="troisDemi" placeholder="Nombre de 3 pieces"/>
-          <input type="text" ref="quatreDemi" placeholder="Nombre de 4 pieces"/>
-          <input type="text" ref="cinqDemi" placeholder="Nombre de 5 pieces"/>
-          <input type="text" ref="sixDemi" placeholder="Nombre de 6 pieces"/>
-          <input type="text" ref="septDemi" placeholder="Nombre de 7 pieces et plus"/>
+          <input type="text" ref="revenuBrutText" placeholder="Revenus brut" required pattern="[0-9]+"/>
+          <input type="text" ref="taxesSchoolText" placeholder="Taxes scolaires" required pattern="[0-9]+"/>
+          <input type="text" ref="taxesCityText" placeholder="Taxes municipales" required pattern="[0-9]+"/>
+          <input type="text" ref="entretien" placeholder="Dépenses d'entretien" pattern="[0-9]+"/>
+          <input type="text" ref="autres" placeholder="Autres dépenses" pattern="[0-9]+"/>
+          <input type="text" ref="vacance" placeholder="Vacances" pattern="[0-9]+"/>
+          <input type="text" ref="assurancesText" placeholder="Assurances" pattern="[0-9]+"/>
+          <input type="text" ref="evaluationTerrain" placeholder="Evaluation municipale du terrain" required pattern="[0-9]+"/>
+          <input type="text" ref="evaluationBatiment" placeholder="Evaluation municipale du batiment" required pattern="[0-9]+"/>
+          <input type="text" ref="deuxDemi" placeholder="Nombre de 2 pieces" pattern="[0-9]+"/>
+          <input type="text" ref="troisDemi" placeholder="Nombre de 3 pieces" pattern="[0-9]+"/>
+          <input type="text" ref="quatreDemi" placeholder="Nombre de 4 pieces" pattern="[0-9]+"/>
+          <input type="text" ref="cinqDemi" placeholder="Nombre de 5 pieces" pattern="[0-9]+"/>
+          <input type="text" ref="sixDemiPlus" placeholder="Nombre de 6 pieces et plus" pattern="[0-9]+"/>
           <div>
             <label>Type:</label>
             <select ref="typeProp">

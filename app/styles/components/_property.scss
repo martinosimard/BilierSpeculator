@@ -23,7 +23,7 @@
 }
 
 .property-completed {
-  p, .property-subtext {
+  div, .property-subtext {
     color: $light-color;
     text-decoration: line-through;
   }
