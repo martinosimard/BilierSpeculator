@@ -2,6 +2,8 @@ import moment  from 'moment';
 import React from 'react';
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
+var {Link, IndexLink} = require('react-router');
+var NumberFormat = require('react-number-format');
 
 var CHAR_NOINFO = "N/D";
 
@@ -43,7 +45,18 @@ export class Property extends React.Component {
       sixDemiPlus, taxesCity, taxesSchool, troisDemi, type, year,
       evaluationTerrain, evaluationBatiment, entretien, autres, vacance} = this.props;
 
-    var propertyClassName = completed ? 'row property property-completed' : 'row property';
+    var propertyClassName = "";//completed ? 'row property property-completed' : 'row property';
+
+    var calculate= (price, rate, down_payment) => {
+      var mi = rate / 1200;
+        var base = 1;
+        var mbase = 1 + mi;
+        for (var i=0; i<25 * 12; i++)
+        {
+          base = base * mbase;
+        }
+        return Math.round((price- down_payment) * mi / ( 1 - (1/base)) * 12);
+    	}
 
     var renderDate = () => {
       var message = 'Created ';
@@ -59,7 +72,7 @@ export class Property extends React.Component {
     var getEvaluation = () => {
       var val = parseFloat(evaluationTerrain) + parseFloat(evaluationBatiment);
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -67,26 +80,54 @@ export class Property extends React.Component {
     var getRevenuBrutEffectif = () => {
       var val = parseFloat(revenuBrut) - parseFloat(vacance);
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
     };
+    var getRevenuBrutEffectifEstime = () => {
+      var val = parseFloat(revenuBrut) - (getDepensesOperationEstime() *0.05);
+      if (val) {
+        return Math.round(val);
+      } else {
+        return CHAR_NOINFO;
+      }
+    };
+
     var getDepensesOperation = () => {
       var val = parseFloat(taxesSchool) + parseFloat(taxesCity)
        + parseFloat(assurances) + parseFloat(entretien)
         + parseFloat(autres);
 
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
     };
+    var getDepensesOperationEstime = () => {
+      var val = parseFloat(revenuBrut) * 0.3;
+
+      if (val) {
+        return Math.round(val);
+      } else {
+        return CHAR_NOINFO;
+      }
+    };
+
     var getRevenuNetOperation = () => {
       var val = getRevenuBrutEffectif() - getDepensesOperation();
       if (val) {
-        return val;
+        return Math.round(val);
+      } else {
+        return CHAR_NOINFO;
+      }
+    };
+
+    var getRevenuNetOperationEstime = () => {
+      var val = getRevenuBrutEffectifEstime() - getDepensesOperationEstime();
+      if (val) {
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -94,7 +135,15 @@ export class Property extends React.Component {
     var getValeurImmeuble = (taux) => {
       var val = (getRevenuNetOperation() / taux) * 100;
       if (val) {
-        return val;
+        return Math.round(val);
+      } else {
+        return CHAR_NOINFO;
+      }
+    };
+    var getValeurImmeubleEstime = (taux) => {
+      var val = (getRevenuNetOperationEstime() / taux) * 100;
+      if (val) {
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -102,7 +151,7 @@ export class Property extends React.Component {
     var getMultiplicateurRevenuBrut = () => {
       var val = parseFloat(price) / parseFloat(revenuBrut);
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -110,7 +159,7 @@ export class Property extends React.Component {
     var getMultiplicateurRevenuNet = () => {
       var val = parseFloat(price) / getRevenuNetOperation();
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -118,7 +167,15 @@ export class Property extends React.Component {
     var getRatioDepenses = () => {
       var val = getDepensesOperation() / getRevenuBrutEffectif();
       if (val) {
-        return val;
+        return Math.round(val);
+      } else {
+        return CHAR_NOINFO;
+      }
+    }
+    var getRatioDepensesEstimePrix = () => {
+      var val = getDepensesOperationEstime() / getRevenuBrutEffectif();
+      if (val) {
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
@@ -126,69 +183,102 @@ export class Property extends React.Component {
     var getRatioTauxCapitalisation = () => {
       var val = getRevenuNetOperation() / parseFloat(price);
       if (val) {
-        return val;
+        return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
     }
+    var get1215 = () => {
+      var val12 = getRevenuNetOperation() * 12;
+      var val15 = getRevenuNetOperation() * 15;
+      if (price >= val12 && price <= val15 ) {
+        return 'fa fa-check';
+      } else {
+        return 'fa fa-times';
+      }
+    }
+
     var getDescriptionShort = () => {
-      return `[${type}]  ${quartier}`;
+      return `${numeroCivique} ${rue} (${type})`;
     }
     var getDescriptionComplete = () => {
       return `${numeroCivique} ${rue}, ${postalCode} Prix de vente : ${price}$Évaluation totale : ${getEvaluation()}`;
     }
+    var getEditLink = () => {
+      return `/edit-property/${id}`;
+    }
     return (
-        <div className={propertyClassName}>
-          <div className="medium-2 columns">
-            <span data-tooltip aria-haspopup="true" className="has-tip" title={getDescriptionComplete()}>
-              {getDescriptionShort()}
-
-            </span>
-            <br />
-          </div>
-          <div className="medium-1 columns">{getDepensesOperation()}</div>
-          <div className="medium-1 columns">{getRevenuBrutEffectif()}</div>
-          <div className="medium-1 columns">{getRevenuNetOperation()}</div>
-          <div className="medium-1 columns">{getValeurImmeuble(5)}</div>
-          <div className="medium-1 columns">{getMultiplicateurRevenuBrut()}</div>
-          <div className="medium-1 columns">{getMultiplicateurRevenuNet()}</div>
-          <div className="medium-1 columns">{getRatioDepenses()}</div>
-          <div className="medium-1 columns">{getRatioTauxCapitalisation()}</div>
-          <div className="medium-1 columns">
-            <button className="button" onClick={() => {
+        <tr>
+          <th scope="row">
+            <small>
+              <span data-tooltip aria-haspopup="true" className="has-tip" title={getDescriptionComplete()}>
+                {getDescriptionShort()}<br />
+                <NumberFormat value={price} displayType={'text'} thousandSeparator={true} suffix={'$'} />
+              </span>
+            </small>
+          </th>
+          <td>
+            <small>
+              <span title="Valeur réel">R&nbsp;:&nbsp;<NumberFormat value={getDepensesOperation()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
+            <span title="Valeur estimé selon le revenu brut">EP&nbsp;:&nbsp;<NumberFormat value={getDepensesOperationEstime()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
+            </small>
+          </td>
+          <td>
+            <small>
+              <span title="Valeur réel">R&nbsp;:&nbsp;<NumberFormat value={getRevenuBrutEffectif()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
+              <span title="Valeur selon les depenses estimés">EP&nbsp;:&nbsp;<NumberFormat value={getRevenuBrutEffectifEstime()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
+            </small>
+          </td>
+          <td>
+            <small>
+              <span title="Valeur réel">R&nbsp;:&nbsp;<NumberFormat value={getRevenuNetOperation()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
+              <span title="Valeur selon les depenses estimés">EP&nbsp;:&nbsp;<NumberFormat value={getRevenuNetOperationEstime()} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
+            </small>
+          </td>
+          <td>
+            <small>
+              <span title="Valeur réel">R&nbsp;:&nbsp;<NumberFormat value={getValeurImmeuble(5)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
+              <span title="Valeur selon les depenses estimés">EP&nbsp;:&nbsp;<NumberFormat value={getValeurImmeubleEstime(5)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
+            </small>
+          </td>
+          <td>
+            <small>
+              {getMultiplicateurRevenuBrut()}
+            </small>
+          </td>
+          <td>
+            <small>
+              {getMultiplicateurRevenuNet()}
+            </small>
+          </td>
+          <td>
+            <small>
+              <span title="Valeur réel">R&nbsp;:&nbsp;{getRatioDepenses()}</span><br />
+            <span title="Valeur estimé selon le prix de vente">EP&nbsp;:&nbsp;{getRatioDepensesEstimePrix()}</span>
+            </small>
+          </td>
+          <td>
+            <small>
+              {getRatioTauxCapitalisation()}
+            </small>
+          </td>
+          <td>
+            <small>
+              <i className={get1215()} aria-hidden="true"></i>
+            </small>
+          </td>
+          <td><small>
+            <span title="5% cash down">5%&nbsp;:&nbsp;<NumberFormat value={calculate(price, 5, price*0.05)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
+            <span title="20% cash down">20%&nbsp;:&nbsp;<NumberFormat value={calculate(price, 5, price*0.2)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
+          </small></td>
+          <td>
+            <Link to={getEditLink()} className="nav-link" activeClassName="active" style={{"display" : "inline"}} ><i className="fa fa-pencil" aria-hidden="true"></i></Link>
+            <a href="#" onClick={() => {
                 dispatch(actions.startToggleProperty(id, !completed));
-              }}>GO</button>
-          </div>
-          <div className="medium-1 columns">
-           <button className="button" onClick={() => {
-             var newProperty = new PropertyInfo(
-               numeroCivique,
-               rue,
-               quartier,
-               deuxDemi,
-               troisDemi,
-               quatreDemi,
-               cinqDemi,
-               sixDemiPlus,
-               postalCode,
-               price,
-               year,
-               revenuBrut,
-               taxesSchool,
-               taxesCity,
-               assurances,
-               type,
-               evaluationTerrain,
-               evaluationBatiment,
-               entretien,
-               autres,
-               vacance
-            );
-
-                dispatch(actions.startEditProperty(id, newProperty));
-              }}>GO</button>
-              </div>
-        </div>
+              }}><i className="fa fa-toggle-on" aria-hidden="true"></i>
+          </a>
+          </td>
+        </tr>
     )
   }
 };

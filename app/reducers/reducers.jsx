@@ -34,8 +34,6 @@ export var propertiesReducer = (state = [], action) => {
       case 'EDIT_PROPERTY' :
       return state.map((property) => {
       				if (property.id === action.id) {
-                debugger
-                action.property.rue = "sorbierz";
       					if (action.property.rue != '') {
       						return {
       							...property,

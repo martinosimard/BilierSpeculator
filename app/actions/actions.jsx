@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { hashHistory } from 'react-router'
 
 import firebase, {firebaseRef, githubProvider, googleProvider} from 'app/firebase/';
 
@@ -86,28 +87,30 @@ export var editProperty = (id, property) => {
   };
 };
 
+export var fetchProperty = (id, property) => {
+  return {
+    type: 'FETCH_PROPERTY',
+    id,
+    property
+  };
+};
+
+export var startFetchProperty = (id) => {
+  return (dispatch, getState) => {
+    var uid = getState().auth.uid;
+    var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
+    dispatch(fetchProperty(id, property));
+  };
+};
+
 export var startEditProperty = (id, property) => {
   return (dispatch, getState) => {
     var uid = getState().auth.uid;
     var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
-debugger
+
     return propertyRef.update(property).then(() => {
-      dispatch(editProperty(id, property));
-    });
-  };
-};
-
-export var startUpdateProperty = (id, property) => {
-  return (dispatch, getState) => {
-    var uid = getState().auth.uid;
-    var propertyRef = firebaseRef.child(`users/${uid}/properties/${id}`);
-    debugger
-    var updates = {
-      ...property
-    };
-
-    return propertyRef.update(updates).then(() => {
-      dispatch(updateProperty(id, updates));
+      dispatch(updateProperty(id, property));
+      hashHistory.push('/#/properties');
     });
   };
 };

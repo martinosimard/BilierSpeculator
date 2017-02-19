@@ -13,7 +13,8 @@ try {
 module.exports = {
   entry: [
     'script!jquery/dist/jquery.min.js',
-    'script!foundation-sites/dist/foundation.min.js',
+    'script!tether/dist/js/tether.min.js',
+    'script!bootstrap/dist/js/bootstrap.min.js',
     './app/app.jsx'
   ],
   externals: {
@@ -50,6 +51,8 @@ module.exports = {
       'node_modules',
       './app/components',
       './app/api',
+      'node_modules/bootstrap/dist/css',
+      'node_modules/bootstrap/font-awesome/css'
     ],
     alias: {
       app: 'app',
@@ -69,12 +72,22 @@ module.exports = {
         },
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
-      }
+      },
+			{
+				test: /\.css$/,
+        		loader: "style-loader!css-loader"
+			},
+			{
+				test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+        		loader: "url"
+			}
     ]
   },
   sassLoader: {
     includePaths: [
-      path.resolve(__dirname, './node_modules/foundation-sites/scss')
+      path.resolve(__dirname, './node_modules/bootstrap/scss'),
+      path.resolve(__dirname, './font-awesome/scss/_variables.scss')
+
     ]
   },
   devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'

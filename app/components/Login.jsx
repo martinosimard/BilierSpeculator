@@ -11,18 +11,15 @@ export class Login extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h1 className="page-title">Property App</h1>
-
-        <div className="row">
-          <div className="columns small-centered small-10 medium-6 large-4">
-            <div className="callout callout-auth">
-              <h3>Login</h3>
-              <p>
-                Login with Github account below
-              </p>
-              <button className="button" onClick={this.onLogin.bind(this)}>Login with Github</button>
-            </div>
+      <div className="container">
+        <div className="card">
+          <div className="card-block">
+            <h1 className="card-title">Property App</h1>
+            <h3 className="card-subtitle">Login</h3>
+            <p className="card-text">
+              Login with Google account below
+            </p>
+            <button className="btn btn-primary" onClick={this.onLogin.bind(this)}>Login with Google</button>
           </div>
         </div>
       </div>

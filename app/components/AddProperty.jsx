@@ -36,7 +36,6 @@ export class AddProperty extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
     var {dispatch} = this.props;
-    debugger
     var newProperty = new PropertyInfo(
             this.refs.numeroCiviqueText.value,
             this.refs.rueText.value,
@@ -90,56 +89,246 @@ export class AddProperty extends React.Component {
   }
   render () {
     return (
-      <div className="container__footer">
+      <div className="container">
         <form onSubmit={this.handleSubmit.bind(this)} data-abide>
-          <input type="text" ref="numeroCiviqueText" placeholder="Numéro civique" required pattern="[a-zA-Z0-9]+"/>
-          <input type="text" ref="rueText" placeholder="Nom de la rue" required pattern="[a-zA-Z]+"/>
-          <input type="text" ref="postalCodeText" placeholder="Code postal" required pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"/>
-          <input type="text" ref="priceText" placeholder="Prix de vente" required pattern="[0-9]+"/>
-          <input type="text" ref="yearText" placeholder="Année de construction" required pattern="^\d{4}$"/>
-          <div>
-            <label>Quartier:</label>
-            <select ref="quartier">
-              <option value="Secteur Vieux-Québec (haute-ville)">Secteur Vieux-Québec (haute-ville)</option>
-              <option value="Secteur Vieux-Québec (basse-ville)">Secteur Vieux-Québec (basse-ville)</option>
-              <option value="Saint-Jean-Baptiste (quartier)">Saint-Jean-Baptiste (quartier)</option>
-              <option value="Montcalm (quartier)">Montcalm (quartier)</option>
-              <option value="Saint-Sacrement (quartier)">Saint-Sacrement (quartier)</option>
-              <option value="Saint-Roch (quartier)">Saint-Roch (quartier)</option>
-              <option value="Saint-Sauveur (quartier)">Saint-Sauveur (quartier)</option>
-              <option value="Limoilou (ancien arrondissement)">Limoilou (ancien arrondissement)</option>
-              <option value="Vieux-Limoilou (quartier)">Vieux-Limoilou (quartier)</option>
-              <option value="Lairet (quartier)">Lairet (quartier)</option>
-              <option value="Maizerets (quartier)">Maizerets (quartier)</option>
-            </select>
+          <div className="row">
+            <div className="col">
+              <h4>Identification</h4>
+            </div>
+            <div className="col" />
           </div>
-          <input type="text" ref="revenuBrutText" placeholder="Revenus brut" required pattern="[0-9]+"/>
-          <input type="text" ref="taxesSchoolText" placeholder="Taxes scolaires" required pattern="[0-9]+"/>
-          <input type="text" ref="taxesCityText" placeholder="Taxes municipales" required pattern="[0-9]+"/>
-          <input type="text" ref="entretien" placeholder="Dépenses d'entretien" pattern="[0-9]+"/>
-          <input type="text" ref="autres" placeholder="Autres dépenses" pattern="[0-9]+"/>
-          <input type="text" ref="vacance" placeholder="Vacances" pattern="[0-9]+"/>
-          <input type="text" ref="assurancesText" placeholder="Assurances" pattern="[0-9]+"/>
-          <input type="text" ref="evaluationTerrain" placeholder="Evaluation municipale du terrain" required pattern="[0-9]+"/>
-          <input type="text" ref="evaluationBatiment" placeholder="Evaluation municipale du batiment" required pattern="[0-9]+"/>
-          <input type="text" ref="deuxDemi" placeholder="Nombre de 2 pieces" pattern="[0-9]+"/>
-          <input type="text" ref="troisDemi" placeholder="Nombre de 3 pieces" pattern="[0-9]+"/>
-          <input type="text" ref="quatreDemi" placeholder="Nombre de 4 pieces" pattern="[0-9]+"/>
-          <input type="text" ref="cinqDemi" placeholder="Nombre de 5 pieces" pattern="[0-9]+"/>
-          <input type="text" ref="sixDemiPlus" placeholder="Nombre de 6 pieces et plus" pattern="[0-9]+"/>
-          <div>
-            <label>Type:</label>
-            <select ref="typeProp">
-              <option value="Duplex">Duplex</option>
-              <option value="Triplex">Triplex</option>
-              <option value="Quadruplex">Quatriplex</option>
-              <option value="Quintuplex">Quintuplex</option>
-              <option value="Moreplex">6 unités ou plus</option>
-            </select>
+
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Numéro civique</span>
+                <input ref="numeroCiviqueText" type="text" className="form-control" />
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nom de la rue</span>
+                <input ref="rueText" type="text" className="form-control" />
+              </div>
+            </div>
           </div>
-          <button className="button expanded">Ajouter la propriétée</button>
-        </form>
-      </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Code postal</span>
+                <input ref="postalCodeText" type="text" className="form-control" />
+                  <span className="input-group-addon">G1G 1G1</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group">
+                <select ref="quartier" className="form-control">
+                  <option value="Secteur Vieux-Québec (haute-ville)">Secteur Vieux-Québec (haute-ville)</option>
+                  <option value="Secteur Vieux-Québec (basse-ville)">Secteur Vieux-Québec (basse-ville)</option>
+                  <option value="Saint-Jean-Baptiste (quartier)">Saint-Jean-Baptiste (quartier)</option>
+                  <option value="Montcalm (quartier)">Montcalm (quartier)</option>
+                  <option value="Saint-Sacrement (quartier)">Saint-Sacrement (quartier)</option>
+                  <option value="Saint-Roch (quartier)">Saint-Roch (quartier)</option>
+                  <option value="Saint-Sauveur (quartier)">Saint-Sauveur (quartier)</option>
+                  <option value="Limoilou (ancien arrondissement)">Limoilou (ancien arrondissement)</option>
+                  <option value="Vieux-Limoilou (quartier)">Vieux-Limoilou (quartier)</option>
+                  <option value="Lairet (quartier)">Lairet (quartier)</option>
+                  <option value="Maizerets (quartier)">Maizerets (quartier)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <select ref="typeProp" className="form-control">
+                  <option value="Duplex">Duplex</option>
+                  <option value="Triplex">Triplex</option>
+                  <option value="Quadruplex">Quatriplex</option>
+                  <option value="Quintuplex">Quintuplex</option>
+                  <option value="Moreplex">6 unités ou plus</option>
+                </select>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Année de construction</span>
+                <input ref="yearText" type="text" className="form-control" aria-label="Année de construction" />
+                <span className="input-group-addon">####</span>
+              </div>
+            </div>
+          </div>
+          <br />
+            <div className="row">
+              <div className="col">
+                <h4>Évaluation</h4>
+              </div>
+              <div className="col" />
+            </div>
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Batiment</span>
+                <input ref="evaluationBatiment" type="text" className="form-control" aria-label="Année de construction" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Terrain</span>
+                <input ref="evaluationTerrain" type="text" className="form-control" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <br />
+            <div className="row">
+              <div className="col">
+                <h4>Prix</h4>
+              </div>
+              <div className="col" />
+            </div>
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Prix de vente</span>
+                <input ref="priceText" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col" />
+          </div>
+          <br />
+            <div className="row">
+              <div className="col">
+                <h4>Revenus</h4>
+              </div>
+              <div className="col" />
+            </div>
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Revenus brut</span>
+                <input ref="revenuBrutText" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col" />
+          </div>
+          <br />
+            <div className="row">
+              <div className="col">
+                <h4>Dépenses d'opération</h4>
+              </div>
+              <div className="col" />
+            </div>
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Taxes municipales</span>
+                <input ref="taxesCityText" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Taxes scolaires</span>
+                <input ref="taxesSchoolText" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Dépenses d'entretien</span>
+                <input ref="entretien" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Assurances</span>
+                <input ref="assurancesText" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Vacances</span>
+                <input ref="vacance" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Autres dépenses</span>
+                <input ref="autres" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                <span className="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <br />
+            <div className="row">
+              <div className="col">
+                <h4>Description</h4>
+              </div>
+              <div className="col" />
+            </div>
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nombre de 2 pieces</span>
+                <input ref="deuxDemi" type="text" className="form-control" aria-label="" />
+                <span className="input-group-addon">#</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nombre de 3 pieces</span>
+                <input ref="troisDemi" type="text" className="form-control" aria-label="" />
+                <span className="input-group-addon">#</span>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nombre de 4 pieces</span>
+                <input ref="quatreDemi" type="text" className="form-control" aria-label="" />
+                <span className="input-group-addon">#</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nombre de 5 pieces</span>
+                <input ref="cinqDemi" type="text" className="form-control" aria-label="" />
+                <span className="input-group-addon">#</span>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Nombre de 6 pieces</span>
+                <input ref="sixDemiPlus" type="text" className="form-control" aria-label="" />
+                <span className="input-group-addon">#</span>
+              </div>
+            </div>
+            <div className="col" />
+          </div>
+          <br />
+        <button className="btn btn-primary">Ajouter la propriétée</button>
+      </form>
+    </div>
     );
   }
 };

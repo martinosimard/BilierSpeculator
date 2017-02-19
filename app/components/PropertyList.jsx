@@ -2,6 +2,7 @@ import React from 'react';
 import * as Redux from 'react-redux';
 import Property from 'Property';
 var BilierAPI = require('BilierAPI');
+var ReactDOM = require('react-dom');
 
 // export for testing purpose
 export class PropertyList extends React.Component {
@@ -14,8 +15,10 @@ export class PropertyList extends React.Component {
 
       if (filterProperties.length === 0) {
         return (
-          <p className="container__message">Aucune propriété</p>
+          <tr ref="aucune" colSpan="12"></tr>
+          //<tr ref="aucune" className="col-12">Aucune propriété</tr>
         );
+
       }
 
       return filterProperties.map((property) => {
@@ -26,22 +29,27 @@ export class PropertyList extends React.Component {
     };
 
     return (
-      <div>
-        <div className="row">
-          <div className="medium-2 columns">Description</div>
-          <div className="medium-1 columns">Dépenses d'opération</div>
-          <div className="medium-1 columns">Revenu Brut Effectif</div>
-          <div className="medium-1 columns">Revenu Net Operation</div>
-          <div className="medium-1 columns">Valeur Immeuble</div>
-          <div className="medium-1 columns">Multiplicateur Revenu Brut</div>
-          <div className="medium-1 columns">Multiplicateur Revenu Net</div>
-          <div className="medium-1 columns">Ratio Depenses</div>
-          <div className="medium-1 columns">Ratio Taux Capitalisation</div>
-          <div className="medium-1 columns">Masquer</div>
-          <div className="medium-1 columns">Modifier la propriétée</div>
-        </div>
-        {renderProperties()}
-      </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Dépenses d'opération</th>
+            <th>RBE</th>
+            <th>RNO</th>
+            <th>Valeur Imm. (5%)</th>
+            <th>MBR</th>
+            <th>MRN</th>
+            <th>Ratio Depenses</th>
+            <th>Ratio Taux Cap.</th>
+            <th>12&nbsp;-&nbsp;15</th>
+            <th>Prêt</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {renderProperties()}
+        </tbody>
+      </table>
     )
   }
 };
