@@ -6,7 +6,7 @@ class PropertyInfo {
   constructor (numeroCivique = '',  rue = '',  quartier = '',  deuxDemi = 0,troisDemi = 0, quatreDemi = 0,
                 cinqDemi = 0,sixDemiPlus = 0, postalCode = '', price = '', year = '',
                 revenuBrut = '', taxesSchool = '', taxesCity = '',  assurances = '', typeProp = '',
-              evaluationTerrain = 0, evaluationBatiment = 0, entretien = 0, autres = 0, vacance = 0)
+              evaluationTerrain = 0, evaluationBatiment = 0, entretien = 0, autres = 0, vacance = 0, identifiant="", url="")
   {
     this.numeroCivique = numeroCivique;
     this.rue = rue;
@@ -29,6 +29,8 @@ class PropertyInfo {
     this.entretien = entretien;
     this.autres = autres;
     this.vacance = vacance;
+    this.identifiant = identifiant;
+    this.url = url;
   }
 };
 
@@ -65,7 +67,9 @@ export class EditProperty extends React.Component {
             this.refs.evaluationBatiment.value,
             this.refs.entretien.value,
             this.refs.autres.value,
-            this.refs.vacance.value
+            this.refs.vacance.value,
+            this.refs.identifiant.value,
+            this.refs.url.value
    );
     dispatch(actions.startEditProperty(this.props.params.id, newProperty));
   }
@@ -79,7 +83,21 @@ export class EditProperty extends React.Component {
            </div>
            <div className="col" />
          </div>
-
+         <div className="row">
+           <div className="col">
+             <div className="input-group">
+               <span className="input-group-addon">Numéro MLS/DuProprio</span>
+               <input ref="identifiant" type="text" className="form-control" defaultValue={this.state.identifiant} />
+             </div>
+           </div>
+           <div className="col">
+             <div className="input-group">
+               <span className="input-group-addon">URL</span>
+               <input ref="url" type="text" className="form-control" defaultValue={this.state.url}/>
+             </div>
+           </div>
+         </div>
+         <br />
          <div className="row">
            <div className="col">
              <div className="input-group">

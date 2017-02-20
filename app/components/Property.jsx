@@ -45,7 +45,8 @@ export class Property extends React.Component {
       sixDemiPlus, taxesCity, taxesSchool, troisDemi, type, year,
       evaluationTerrain, evaluationBatiment, entretien, autres, vacance} = this.props;
 
-    var propertyClassName = "";//completed ? 'row property property-completed' : 'row property';
+    var propertyClassName = completed ? 'discarted' : '';
+    var toggle = completed ? 'fa fa-toggle-off' : 'fa fa-toggle-on';
 
     var calculate= (price, rate, down_payment) => {
       var mi = rate / 1200;
@@ -78,7 +79,7 @@ export class Property extends React.Component {
       }
     };
     var getRevenuBrutEffectif = () => {
-      var val = parseFloat(revenuBrut) - parseFloat(vacance);
+      var val = parseFloat(revenuBrut) - parseFloat((vacance ? vacance : 0));
       if (val) {
         return Math.round(val);
       } else {
@@ -95,9 +96,11 @@ export class Property extends React.Component {
     };
 
     var getDepensesOperation = () => {
-      var val = parseFloat(taxesSchool) + parseFloat(taxesCity)
-       + parseFloat(assurances) + parseFloat(entretien)
-        + parseFloat(autres);
+      var val = parseFloat((taxesSchool ? taxesSchool : 0)) +
+      parseFloat((taxesCity ? taxesCity : 0)) +
+       parseFloat((assurances ? assurances : 0)) +
+       parseFloat((entretien ? entretien : 0)) +
+        parseFloat((autres ? autres : 0));
 
       if (val) {
         return Math.round(val);
@@ -181,21 +184,24 @@ export class Property extends React.Component {
       }
     }
     var getRatioTauxCapitalisation = () => {
-      var val = getRevenuNetOperation() / parseFloat(price);
+      var val = getRevenuNetOperationEstime() / parseFloat(price);
       if (val) {
         return Math.round(val);
       } else {
         return CHAR_NOINFO;
       }
     }
-    var get1215 = () => {
-      var val12 = getRevenuNetOperation() * 12;
-      var val15 = getRevenuNetOperation() * 15;
-      if (price >= val12 && price <= val15 ) {
+    var getIndiceIcon = (val) => {
+      var val = getIndice(val);
+      if (price <= val ) {
         return 'fa fa-check';
       } else {
         return 'fa fa-times';
       }
+    }
+
+    var getIndice = (val) => {
+      return getRevenuNetOperation() * val;
     }
 
     var getDescriptionShort = () => {
@@ -208,12 +214,13 @@ export class Property extends React.Component {
       return `/edit-property/${id}`;
     }
     return (
-        <tr>
+        <tr className={propertyClassName}>
           <th scope="row">
             <small>
               <span data-tooltip aria-haspopup="true" className="has-tip" title={getDescriptionComplete()}>
                 {getDescriptionShort()}<br />
-                <NumberFormat value={price} displayType={'text'} thousandSeparator={true} suffix={'$'} />
+              <NumberFormat value={price} displayType={'text'} thousandSeparator={true} suffix={'$'} />/
+                <NumberFormat value={revenuBrut} displayType={'text'} thousandSeparator={true} suffix={'$'} />
               </span>
             </small>
           </th>
@@ -264,18 +271,20 @@ export class Property extends React.Component {
           </td>
           <td>
             <small>
-              <i className={get1215()} aria-hidden="true"></i>
+              <span title="Indice à 12 estimé">12E&nbsp;:&nbsp;<NumberFormat value={getIndice(12)} displayType={'text'} thousandSeparator={true} suffix={'$'} /><i className={getIndiceIcon(12)} aria-hidden="true"></i></span><br />
+              <span title="Indice à 15 estimé">15E&nbsp;:&nbsp;<NumberFormat value={getIndice(15)} displayType={'text'} thousandSeparator={true} suffix={'$'} /><i className={getIndiceIcon(15)} aria-hidden="true"></i></span>
             </small>
           </td>
           <td><small>
+            <span title="0% cash down">0%&nbsp;:&nbsp;<NumberFormat value={calculate(price, 5, 0)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
             <span title="5% cash down">5%&nbsp;:&nbsp;<NumberFormat value={calculate(price, 5, price*0.05)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span><br />
             <span title="20% cash down">20%&nbsp;:&nbsp;<NumberFormat value={calculate(price, 5, price*0.2)} displayType={'text'} thousandSeparator={true} suffix={'$'} /></span>
           </small></td>
           <td>
-            <Link to={getEditLink()} className="nav-link" activeClassName="active" style={{"display" : "inline"}} ><i className="fa fa-pencil" aria-hidden="true"></i></Link>
+            <Link to={getEditLink()} className="nav-link" activeClassName="active" style={{"display" : "inline", "padding" : "0"}} ><i className="fa fa-pencil" aria-hidden="true"></i></Link>
             <a href="#" onClick={() => {
                 dispatch(actions.startToggleProperty(id, !completed));
-              }}><i className="fa fa-toggle-on" aria-hidden="true"></i>
+              }} style={{"padding" : "0 0 0 5px"}}><i className={toggle} aria-hidden="true"></i>
           </a>
           </td>
         </tr>

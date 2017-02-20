@@ -6,7 +6,7 @@ class PropertyInfo {
   constructor (numeroCivique = '',  rue = '',  quartier = '',  deuxDemi = 0,troisDemi = 0, quatreDemi = 0,
                 cinqDemi = 0,sixDemiPlus = 0, postalCode = '', price = '', year = '',
                 revenuBrut = '', taxesSchool = '', taxesCity = '',  assurances = '', typeProp = '',
-              evaluationTerrain = 0, evaluationBatiment = 0, entretien = 0, autres = 0, vacance = 0)
+              evaluationTerrain = 0, evaluationBatiment = 0, entretien = 0, autres = 0, vacance = 0, identifiant="", url="")
   {
     this.numeroCivique = numeroCivique;
     this.rue = rue;
@@ -29,6 +29,8 @@ class PropertyInfo {
     this.entretien = entretien;
     this.autres = autres;
     this.vacance = vacance;
+    this.identifiant = identifiant;
+    this.url = url;
   }
 };
 
@@ -57,31 +59,12 @@ export class AddProperty extends React.Component {
             this.refs.evaluationBatiment.value,
             this.refs.entretien.value,
             this.refs.autres.value,
-            this.refs.vacance.value
+            this.refs.vacance.value,
+            this.refs.identifiant.value,
+            this.refs.url.value
    );
 
     if (this.refs.rueText.value.length > 0) {
-      this.refs.numeroCiviqueText.value = "";
-      this.refs.rueText.value = "";
-      this.refs.quartier.selectedIndex = 0;
-      this.refs.deuxDemi.value = "";
-      this.refs.troisDemi.value = "";
-      this.refs.quatreDemi.value = "";
-      this.refs.cinqDemi.value = "";
-      this.refs.sixDemiPlus.value = "";
-      this.refs.postalCodeText.value = "";
-      this.refs.priceText.value = "";
-      this.refs.yearText.value = "";
-      this.refs.revenuBrutText.value = "";
-      this.refs.taxesSchoolText.value = "";
-      this.refs.taxesCityText.value = "";
-      this.refs.assurancesText.value = "";
-      this.refs.typeProp.selectedIndex = 0;
-      this.refs.evaluationTerrain.value = "";
-      this.refs.evaluationBatiment.value = "";
-      this.refs.entretien.value = "";
-      this.refs.autres.value = "";
-      this.refs.vacance.value = "";
       dispatch(actions.startAddProperty(newProperty));
     } else {
       this.refs.rueText.focus();
@@ -97,7 +80,21 @@ export class AddProperty extends React.Component {
             </div>
             <div className="col" />
           </div>
-
+          <div className="row">
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">Numéro MLS/DuProprio</span>
+                <input ref="identifiant" type="text" className="form-control" />
+              </div>
+            </div>
+            <div className="col">
+              <div className="input-group">
+                <span className="input-group-addon">URL</span>
+                <input ref="url" type="text" className="form-control" />
+              </div>
+            </div>
+          </div>
+          <br />
           <div className="row">
             <div className="col">
               <div className="input-group">

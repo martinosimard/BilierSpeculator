@@ -39,6 +39,7 @@ export var startAddProperty = (newProperty) => {
         ...property,
         id: propertyRef.key
       }));
+      hashHistory.push('/#/properties');
     });
   };
 };
